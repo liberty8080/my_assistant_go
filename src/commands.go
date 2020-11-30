@@ -6,17 +6,44 @@ import (
 	"log"
 )
 
-var Commands map[string]func(update tgbotapi.Update) string
+var CommandsMap = make(map[string]NormalCommand)
 
-func toJson(update tgbotapi.Update) string {
-	jsons, err := json.Marshal(update)
-	if err != nil {
-		log.Println("json转换失败")
-	}
-	return string(jsons)
+/*type Command interface {
+	execute(update tgbotapi.Update) string
+}*/
+
+type NormalCommand struct {
+	// 名称,匹配命令
+	name string
+	// 描述,被help命令调用
+	desc string
+	// 执行的方法
+	call func(update tgbotapi.Update, args ...string) string
+}
+
+func (normal NormalCommand) handleUpdate(update tgbotapi.Update, args ...string) string {
+	return normal.call(update, args...)
 }
 
 func init() {
-	Commands["json"] = toJson
+	//CommandsMap
+	CommandsMap["json"] = NormalCommand{
+		name: "json",
+		desc: "json数据转换",
+		call: func(update tgbotapi.Update, args ...string) string {
+			jsons, err := json.Marshal(update)
+			if err != nil {
+				log.Println("json转换失败")
+			}
+			return string(jsons)
+		},
+	}
+	CommandsMap["help"] = NormalCommand{
+		name: "help",
+		desc: "帮助信息",
+		call: func(update tgbotapi.Update, args ...string) string {
+			return "help!"
+		},
+	}
 
 }
