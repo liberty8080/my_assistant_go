@@ -21,10 +21,6 @@ type NormalCommand struct {
 	call func(update tgbotapi.Update, args ...string) string
 }
 
-func (normal NormalCommand) handleUpdate(update tgbotapi.Update, args ...string) string {
-	return normal.call(update, args...)
-}
-
 func init() {
 	//CommandsMap
 	CommandsMap["json"] = NormalCommand{
