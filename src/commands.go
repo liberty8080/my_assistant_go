@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-var CommandsMap = make(map[string]NormalCommand)
+var CommandsMap = make(map[string]*NormalCommand)
 
 /*type Command interface {
 	execute(update tgbotapi.Update) string
@@ -23,7 +23,7 @@ type NormalCommand struct {
 
 func init() {
 	//CommandsMap
-	CommandsMap["json"] = NormalCommand{
+	CommandsMap["json"] = &NormalCommand{
 		name: "json",
 		desc: "json数据转换",
 		call: func(update tgbotapi.Update, args ...string) string {
@@ -34,7 +34,7 @@ func init() {
 			return string(jsons)
 		},
 	}
-	CommandsMap["help"] = NormalCommand{
+	CommandsMap["help"] = &NormalCommand{
 		name: "help",
 		desc: "帮助信息",
 		call: func(update tgbotapi.Update, args ...string) string {

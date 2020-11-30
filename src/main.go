@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -14,7 +15,7 @@ func handleUpdate(update tgbotapi.Update) {
 		for name, handler := range CommandsMap {
 			if name == update.Message.Text[1:] {
 				//参数形式待定
-				log.Print("执行" + name[1:])
+				log.Print("执行" + name)
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, handler.call(update))
 
 				msg.ReplyToMessageID = update.Message.MessageID
@@ -25,13 +26,13 @@ func handleUpdate(update tgbotapi.Update) {
 	}
 }
 
-func main() {
-	bot, err := tgbotapi.NewBotAPI("1230304283:AAH4Gu7pw4IPjDXn0_mJf9x9aiHOmF-sj2Q")
+func init() {
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
 	BOT = bot
-	bot.Debug = true
+	bot.Debug = false
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
@@ -45,7 +46,9 @@ func main() {
 			continue
 		}
 		handleUpdate(update)
-
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 	}
+}
+
+func main() {
+
 }
