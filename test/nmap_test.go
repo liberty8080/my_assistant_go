@@ -1,9 +1,9 @@
 package test
 
 import (
-	"awesoneProject/src/util"
 	"fmt"
 	"io/ioutil"
+	"my_assistant_go/util"
 	"net/http"
 	"testing"
 )
