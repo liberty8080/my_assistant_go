@@ -9,10 +9,6 @@ import (
 
 var CommandsMap = make(map[string]*NormalCommand)
 
-/*type Command interface {
-	execute(update tgbotapi.Update) string
-}*/
-
 type NormalCommand struct {
 	// 名称,匹配命令
 	name string
@@ -22,41 +18,35 @@ type NormalCommand struct {
 	Call func(update tgbotapi.Update, args ...string) string
 }
 
-func Help(m map[string]*NormalCommand) string {
-	result := ""
-	//var buf bytes.Buffer
-	for key, command := range CommandsMap {
-		//buf.WriteString(fmt.Sprintf("/%s:%s\n", key, command.desc))
-		result = fmt.Sprintf("%s/%s:%s\n", result, key, command.desc)
-	}
-	return result
+var Help = &NormalCommand{
+	name: "help",
+	desc: "帮助信息",
+	Call: func(update tgbotapi.Update, args ...string) string {
+		result := ""
+		//var buf bytes.Buffer
+		for key, command := range CommandsMap {
+			//buf.WriteString(fmt.Sprintf("/%s:%s\n", key, command.desc))
+			result = fmt.Sprintf("%s/%s:%s\n", result, key, command.desc)
+		}
+		return result
+	},
+}
+
+var Json = &NormalCommand{
+	name: "json",
+	desc: "json数据转换",
+	Call: func(update tgbotapi.Update, args ...string) string {
+		jsons, err := json.Marshal(update)
+		if err != nil {
+			log.Println("json转换失败")
+		}
+		return string(jsons)
+	},
 }
 
 func init() {
 	//CommandsMap
-	CommandsMap["json"] = &NormalCommand{
-		name: "json",
-		desc: "json数据转换",
-		Call: func(update tgbotapi.Update, args ...string) string {
-			jsons, err := json.Marshal(update)
-			if err != nil {
-				log.Println("json转换失败")
-			}
-			return string(jsons)
-		},
-	}
-	CommandsMap["help"] = &NormalCommand{
-		name: "help",
-		desc: "帮助信息",
-		Call: func(update tgbotapi.Update, args ...string) string {
-			result := ""
-			//var buf bytes.Buffer
-			for key, command := range CommandsMap {
-				//buf.WriteString(fmt.Sprintf("/%s:%s\n", key, command.desc))
-				result = fmt.Sprintf("%s/%s:%s\n", result, key, command.desc)
-			}
-			return result
-		},
-	}
+	CommandsMap["json"] = Json
+	CommandsMap["help"] = Help
 
 }

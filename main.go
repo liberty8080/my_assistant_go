@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/kataras/iris"
 	"log"
 	"my_assistant_go/bot"
 	"os"
@@ -51,6 +52,13 @@ func init() {
 	}
 }
 
+func irisInit() {
+	app := iris.New()
+	app.Get("/", func(ctx iris.Context) {})
+	_ = app.Run(iris.Addr(":8080"))
+}
+
 func main() {
 	log.Print("starting")
+
 }
