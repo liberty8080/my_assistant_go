@@ -33,5 +33,9 @@ func TestNmap(t *testing.T) {
 
 func TestPublicIp(t *testing.T) {
 	//GetPublicIP()
-	println(util.GetPublicIP())
+	print(util.GetPublicIP())
+}
+
+func TestHelpCommand(t *testing.T) {
+
 }
