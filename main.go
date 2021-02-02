@@ -19,9 +19,6 @@ func handleUpdate(update tgbotapi.Update) {
 				//参数形式待定
 				log.Print("执行" + name)
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, handler.Call(update))
-
-				msg.ReplyToMessageID = update.Message.MessageID
-
 				_, _ = BOT.Send(msg)
 			}
 		}
@@ -30,7 +27,6 @@ func handleUpdate(update tgbotapi.Update) {
 
 func init() {
 	botAPI, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
-	log.Print(os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -54,5 +50,4 @@ func init() {
 
 func main() {
 	log.Print("starting")
-
 }

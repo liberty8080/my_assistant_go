@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"my_assistant_go/util"
 )
 
 var CommandsMap = make(map[string]*NormalCommand)
@@ -23,10 +24,8 @@ var Help = &NormalCommand{
 	desc: "帮助信息",
 	Call: func(update tgbotapi.Update, args ...string) string {
 		result := ""
-		//var buf bytes.Buffer
 		for key, command := range CommandsMap {
-			//buf.WriteString(fmt.Sprintf("/%s:%s\n", key, command.desc))
-			result = fmt.Sprintf("%s/%s:%s\n", result, key, command.desc)
+			result = fmt.Sprintf("%s/%s: %s\n", result, key, command.desc)
 		}
 		return result
 	},
@@ -44,9 +43,34 @@ var Json = &NormalCommand{
 	},
 }
 
+var DDNS = &NormalCommand{
+	name: "ddns",
+	desc: "同步ddns",
+	Call: func(update tgbotapi.Update, args ...string) string {
+		return ""
+	},
+}
+
+var IP = &NormalCommand{
+	name: "ip",
+	desc: "获取当前公网ip",
+	Call: func(update tgbotapi.Update, args ...string) string {
+		return util.GetPublicIP()
+	},
+}
+
+var Expire = &NormalCommand{
+	name: "expire",
+	desc: "查看机场过期时间",
+	Call: func(update tgbotapi.Update, args ...string) string {
+		return util.Expire()
+	},
+}
+
 func init() {
-	//CommandsMap
 	CommandsMap["json"] = Json
 	CommandsMap["help"] = Help
-
+	CommandsMap["ddns"] = DDNS
+	CommandsMap["ip"] = IP
+	CommandsMap["expire"] = Expire
 }
