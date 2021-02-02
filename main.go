@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/kataras/iris"
 	"log"
 	"my_assistant_go/bot"
 	"os"
@@ -19,9 +18,6 @@ func handleUpdate(update tgbotapi.Update) {
 				//参数形式待定
 				log.Print("执行" + name)
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, handler.Call(update))
-
-				msg.ReplyToMessageID = update.Message.MessageID
-
 				_, _ = BOT.Send(msg)
 			}
 		}
@@ -30,7 +26,6 @@ func handleUpdate(update tgbotapi.Update) {
 
 func init() {
 	botAPI, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
-	log.Print(os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -52,13 +47,6 @@ func init() {
 	}
 }
 
-func irisInit() {
-	app := iris.New()
-	app.Get("/", func(ctx iris.Context) {})
-	_ = app.Run(iris.Addr(":8080"))
-}
-
 func main() {
 	log.Print("starting")
-
 }
