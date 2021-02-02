@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"my_assistant_go/util"
 	"net/http"
 	"testing"
@@ -33,9 +34,13 @@ func TestNmap(t *testing.T) {
 
 func TestPublicIp(t *testing.T) {
 	//GetPublicIP()
-	print(util.GetPublicIP())
+	println(util.GetPublicIP())
 }
 
 func TestHelpCommand(t *testing.T) {
 
+}
+
+func TestExpire(t *testing.T) {
+	log.Printf("vmess: %s\n", util.Expire())
 }
