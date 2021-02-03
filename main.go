@@ -27,7 +27,6 @@ func handleUpdate(update tgbotapi.Update) {
 }
 
 func init() {
-	log.Println(gf.VERSION)
 	botAPI, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
@@ -56,5 +55,5 @@ func init() {
 }
 
 func main() {
-
+	log.Print("starting")
 }
