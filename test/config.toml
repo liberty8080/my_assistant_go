@@ -1,0 +1,39 @@
+# HTTP Server
+[server]
+Address = ":8081"
+ServerRoot = "public"
+ServerAgent = "tools"
+#LogPath = "/tmp/log/onismTools/server"
+
+# Logger.
+[logger]
+#Path        = "/tmp/log/onismTools"
+Level       = "all"
+Stdout      = true
+
+# Template.
+[viewer]
+Path        = "template"
+DefaultFile = "index.html"
+Delimiters  =  ["${", "}"]
+
+# Database.
+[database]
+link  = "mysql:root:jacob@123@tcp(192.168.98.100:3306)/jacob-aide"
+debug = true
+# Database logger.
+#[database.logger]
+#Path   = "/tmp/log/onismTools/sql"
+#Level  = "all"
+#Stdout = true
+# Redis数据库配置
+#[redis]
+#default = "121.36.98.152:6379,0,*idleTimeout=600"
+
+[gfcli]
+[[gfcli.gen.dao]]
+link  = "mysql:root:jacob@123@tcp(192.168.98.100:3306)/jacob-aide"
+
+#group  = "default"
+#prefix = "weibo_"
+tables = ""

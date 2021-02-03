@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"my_assistant_go/app/dao"
 	"my_assistant_go/util"
 	"net/http"
 	"testing"
@@ -43,4 +44,21 @@ func TestHelpCommand(t *testing.T) {
 
 func TestExpire(t *testing.T) {
 	log.Printf("vmess: %s\n", util.Expire())
+}
+
+func TestDb(t *testing.T) {
+	//db := g.DB()
+	//config := &model.Config{}
+	//
+	//err := db.Table("config").Struct(config)
+	//if err != nil {
+	//	log.Panic(err)
+	//}
+	//log.Println(config)
+	config, err := dao.Config.Where("id=?", 3).One()
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Println(config)
+
 }

@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"my_assistant_go/bot"
 	"os"
 	"strings"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/gogf/gf"
 )
 
 var BOT *tgbotapi.BotAPI
@@ -25,6 +27,7 @@ func handleUpdate(update tgbotapi.Update) {
 }
 
 func init() {
+	log.Println(gf.VERSION)
 	botAPI, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
@@ -43,10 +46,15 @@ func init() {
 		if update.Message == nil {
 			continue
 		}
+		if update.Message.From.ID != 551322172 {
+			_, _ = botAPI.Send(tgbotapi.NewMessage(551322172, "用户:"+update.Message.From.UserName+
+				" : "+update.Message.Text))
+			continue
+		}
 		handleUpdate(update)
 	}
 }
 
 func main() {
-	log.Print("starting")
+
 }
