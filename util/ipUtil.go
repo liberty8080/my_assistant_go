@@ -77,11 +77,11 @@ func Expire() string {
 			if err != nil {
 				log.Panic("vmess解码失败! vmess:" + string(link))
 			}
-			log.Println(string(link))
+			//log.Println(string(link))
 			v := VmessObj{}
 			_ = json.Unmarshal(link, &v)
 			if strings.Contains(v.Remark, "剩余流量") || strings.Contains(v.Remark, "过期时间") {
-				log.Println(v.Remark)
+				//log.Println(v.Remark)
 				result += v.Remark + "\n"
 			}
 		}
