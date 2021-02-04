@@ -7,9 +7,9 @@ import (
 )
 
 func Get(url string) string {
-	res, err := http.Get("https://subscribe.zealingcloud.info/link/Zxv1RYVrJ7MXhSFS?sub=3")
+	res, err := http.Get(url)
 	if err != nil {
-		log.Panic("订阅内容请求失败!")
+		log.Panicf("get请求失败!url:%s", url)
 	}
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)

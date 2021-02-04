@@ -6,11 +6,11 @@ import (
 	"log"
 )
 
-var engine *xorm.Engine
+var Engine *xorm.Engine
 
-func initDb() {
+func InitDb() {
 	var err error
-	engine, err = xorm.NewEngine("mysql",
+	Engine, err = xorm.NewEngine("mysql",
 		"aide:jacob_aide@(192.168.98.100:3306)/jacob_aide?charset=utf8")
 	if err != nil {
 		log.Fatal("数据库连接失败!")
@@ -21,5 +21,5 @@ func initDb() {
 }
 
 func init() {
-	initDb()
+	InitDb()
 }

@@ -2,12 +2,13 @@ package bot
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"log"
 	"testing"
 )
 
 func TestDDNS(t *testing.T) {
 
-	DDNS.Call(tgbotapi.Update{
+	result := DDNS.Call(tgbotapi.Update{
 		UpdateID:           0,
 		Message:            nil,
 		EditedMessage:      nil,
@@ -19,4 +20,5 @@ func TestDDNS(t *testing.T) {
 		ShippingQuery:      nil,
 		PreCheckoutQuery:   nil,
 	})
+	log.Println(result)
 }

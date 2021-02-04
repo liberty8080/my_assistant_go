@@ -48,9 +48,12 @@ var DDNS = &NormalCommand{
 	name: "ddns",
 	desc: "同步ddns",
 	Call: func(update tgbotapi.Update, args ...string) string {
-		config, _ := dao.Config.Where("type=2").All()
-		log.Println(config)
-		return ""
+		username := dao.DynuConfig("username")
+		passwd := dao.DynuConfig("password")
+		hostname := dao.DynuConfig("hostname")
+		myIp := util.GetPublicIP()
+		result := util.Get(fmt.Sprintf("https://api.dynu.com/nic/update?hostname=%s&myip=%s&username=%s&password=%s", hostname, myIp, username, passwd))
+		return result
 	},
 }
 

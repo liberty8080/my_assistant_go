@@ -1,12 +1,11 @@
 package main
 
 import (
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"my_assistant_go/bot"
 	"os"
 	"strings"
-
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 var BOT *tgbotapi.BotAPI
@@ -25,9 +24,10 @@ func handleUpdate(update tgbotapi.Update) {
 	}
 }
 
-func init() {
+func InitBot() {
 	botAPI, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
 	if err != nil {
+		log.Println(os.Getenv("BOT_TOKEN"))
 		log.Panic(err)
 	}
 	BOT = botAPI
@@ -54,5 +54,8 @@ func init() {
 }
 
 func main() {
+	//boot.InitDb()
+	//boot.InitBot()
+	InitBot()
 	log.Print("starting")
 }
