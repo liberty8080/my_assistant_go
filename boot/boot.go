@@ -1,18 +1,23 @@
 package boot
 
 import (
-	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/net/ghttp"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/xormplus/xorm"
+	"log"
 )
 
-func init() {
-	//v := g.View()
-	//c := g.Config()
-	s := g.Server()
-	s.SetNameToUriType(ghttp.URI_TYPE_CAMEL)
-	s.SetErrorLogEnabled(true)
-	s.SetAccessLogEnabled(true)
-	s.SetFileServerEnabled(false)
+var engine *xorm.Engine
 
-	s.SetPort(8081)
+func initDb() {
+	var err error
+	engine, err = xorm.NewEngine("mysql", "root:123@/test?charset=utf8")
+	if err != nil {
+		log.Fatal("数据库连接失败!")
+	}
+	// aide:jacob_aide@(192.168.98.100:3306)/jacob_aide?charset=utf8
+	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
+}
+
+func init() {
+	initDb()
 }

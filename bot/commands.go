@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"my_assistant_go/app/dao"
 	"my_assistant_go/util"
 )
 
@@ -47,6 +48,8 @@ var DDNS = &NormalCommand{
 	name: "ddns",
 	desc: "同步ddns",
 	Call: func(update tgbotapi.Update, args ...string) string {
+		config, _ := dao.Config.Where("type=2").All()
+		log.Println(config)
 		return ""
 	},
 }
