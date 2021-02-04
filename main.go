@@ -33,7 +33,7 @@ func init() {
 	BOT = botAPI
 	botAPI.Debug = false
 
-	log.Printf("成功登录BOT: %s", botAPI.Self.UserName)
+	log.Printf("成功登录BOT: %s ", botAPI.Self.UserName)
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
