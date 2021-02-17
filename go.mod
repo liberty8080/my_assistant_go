@@ -6,6 +6,7 @@ require (
 	github.com/CloudyKit/jet v2.1.2+incompatible // indirect
 	github.com/agrison/go-tablib v0.0.0-20160310143025-4930582c22ee // indirect
 	github.com/agrison/mxj v0.0.0-20160310142625-1269f8afb3b4 // indirect
+	github.com/antchfx/htmlquery v1.2.3
 	github.com/bndr/gotabulate v1.1.2 // indirect
 	github.com/clbanning/mxj v1.8.5-0.20200714211355-ff02cfb8ea28 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

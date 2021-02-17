@@ -41,11 +41,6 @@ func GetPublicIP() string {
 	return string(s)
 }
 
-// 同步ddns
-func SyncDDNS() string {
-	return ""
-}
-
 type VmessObj struct {
 	Host       string `json:"host"`
 	Path       string `json:"path"`
