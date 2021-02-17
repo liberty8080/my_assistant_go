@@ -12,6 +12,9 @@ type Scheduler interface {
 	ConfigMasterWorkerChan(chan Request)
 }
 
+//todo: 请求失败重试
+//todo: 增量爬取
+//todo:
 func (e *CrawlerEngine) Run(seeds ...Request) {
 	in := make(chan Request)      //scheduler 的输入
 	out := make(chan ParseResult) //worker的输出
