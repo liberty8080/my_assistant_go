@@ -12,5 +12,5 @@ func worker(request Request) (ParseResult, error) {
 		log.Printf("请求失败!,Url: %s\n", request.Url)
 		return ParseResult{}, err
 	}
-	return request.ParseFunc(content), nil
+	return request.ParseFunc(content, request.Params), nil
 }

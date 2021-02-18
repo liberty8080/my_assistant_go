@@ -24,16 +24,31 @@ func Get(url string) string {
 func GetHtml(url string) (string, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0")
-	client := &http.Client{Timeout: time.Second * 5}
-	resp, err := client.Do(req)
-	if err != nil {
-		//log.Panic(err)
-		return "", err
+	var (
+		err     error
+		resp    *http.Response
+		retries = 3
+	)
+	for retries > 0 {
+		client := &http.Client{Timeout: time.Second * 5}
+		resp, err = client.Do(req)
+		if err != nil {
+			log.Printf("请求失败,一秒后重新请求,错误信息:%v", err)
+			time.Sleep(time.Second)
+			retries -= 1
+		} else {
+			break
+		}
 	}
-	defer resp.Body.Close()
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil && data == nil {
-		log.Panicln(err)
+
+	if resp != nil {
+		defer resp.Body.Close()
+		data, err := ioutil.ReadAll(resp.Body)
+		if err != nil && data == nil {
+			log.Panicln(err)
+		}
+		return fmt.Sprintf("%s", data), nil
 	}
-	return fmt.Sprintf("%s", data), nil
+	return "", err
+
 }
