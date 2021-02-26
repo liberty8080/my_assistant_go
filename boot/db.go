@@ -8,10 +8,18 @@ import (
 
 var Engine *xorm.Engine
 
+func initMysql() (*xorm.Engine, error) {
+	return xorm.NewEngine("mysql",
+		"aide:jacob_aide@(192.168.98.100:3306)/jacob_aide?charset=utf8")
+}
+
+func initSqlite() (*xorm.Engine, error) {
+	return xorm.NewEngine("sqlite3", "")
+}
+
 func InitDb() {
 	var err error
-	Engine, err = xorm.NewEngine("mysql",
-		"aide:jacob_aide@(192.168.98.100:3306)/jacob_aide?charset=utf8")
+	Engine, err = initMysql()
 	if err != nil {
 		log.Fatal("数据库连接失败!")
 	}

@@ -12,6 +12,7 @@ type Novel struct {
 	Brief      string    `xorm:"comment('简介') VARCHAR(2000)"`
 	Cover      string    `xorm:"comment('封面') VARCHAR(255)"`
 	Author     string    `xorm:"comment('作者') VARCHAR(20)"`
+	RawUrl     string    `xorm:"VARCHAR(255)"`
 	CreateTime time.Time `xorm:"DATETIME"`
 	UpdateTime time.Time `xorm:"DATETIME"`
 }

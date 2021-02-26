@@ -15,8 +15,8 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.0.0-rc1
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
-	github.com/stretchr/testify v1.6.1 // indirect
-	github.com/syndtr/goleveldb v1.0.0 // indirect
+	github.com/stretchr/testify v1.6.1
+	github.com/syndtr/goleveldb v1.0.0
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/xormplus/builder v0.0.0-20200331055651-240ff40009be // indirect
 	github.com/xormplus/xorm v0.0.0-20210107091022-175d736afaae

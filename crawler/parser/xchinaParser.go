@@ -5,6 +5,7 @@ import (
 	"github.com/antchfx/htmlquery"
 	"golang.org/x/net/html"
 	"log"
+	"my_assistant_go/app/dao"
 	"my_assistant_go/app/model"
 	"my_assistant_go/crawler/engine"
 	"regexp"
@@ -25,6 +26,7 @@ func ParseFictionList(html string, params ...interface{}) engine.ParseResult {
 	for _, row := range list {
 		linkNode := htmlquery.FindOne(row, "./a[contains(@href,'id')]")
 		link := htmlquery.SelectAttr(linkNode, "href")
+
 		result.Request = append(result.Request, engine.Request{
 			Url:       baseUrl + link,
 			ParseFunc: GetFictionInfo,
@@ -56,19 +58,21 @@ func GetFictionInfo(html string, params ...interface{}) engine.ParseResult {
 		Brief:      getDataFromMeta(root, "description"),
 		Cover:      getDataFromMeta(root, "image"),
 		Author:     "",
+		RawUrl:     getDataFromMeta(root, "url"),
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 	}
 
+	dao.AddOrUpdateNovel(&novel)
 	for _, chapterNode := range chapterNodes {
 		href := htmlquery.SelectAttr(chapterNode, "href")
 		result.Request = append(result.Request, engine.Request{
 			Url:       baseUrl + href,
 			ParseFunc: GetFictionContent,
-			Params:    novel.RawId,
+			Params:    novel.Id,
 		})
 	}
-	result.Items = append(result.Items, novel)
+	result.Items = append(result.Items, &novel)
 	return result
 }
 
@@ -97,18 +101,20 @@ func GetFictionContent(html string, params ...interface{}) engine.ParseResult {
 		rowContent += htmlquery.OutputHTML(node, true)
 		content += htmlquery.InnerText(node) + "\n"
 	}
-	chapter := model.NovelChapter{
-		NovelId:     params[0].(int),
-		ChapterName: getDataFromMeta(root, "title"),
-		ContentId:   0,
-		CreateTime:  time.Now(),
-		UpdateTime:  time.Now(),
-	}
-
-	novelContent := model.NovelContent{
+	novelContent := &model.NovelContent{
 		RawContent: rowContent,
 		Content:    content,
 	}
+	dao.AddOrUpdateContent(novelContent)
+	chapter := &model.NovelChapter{
+		NovelId:     params[0].(int),
+		ChapterName: getDataFromMeta(root, "title"),
+		ContentId:   novelContent.Id,
+		CreateTime:  time.Now(),
+		UpdateTime:  time.Now(),
+	}
+	dao.AddOrUpdateChapter(chapter)
+
 	if params == nil {
 		log.Panic("参数传递错误!")
 	} else {
