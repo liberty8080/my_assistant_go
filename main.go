@@ -37,22 +37,24 @@ func InitBot() {
 		log.Panic(err)
 	}
 	BOT = botAPI
-	botAPI.Debug = false
+	botAPI.Debug = true
 
 	log.Printf("成功登录BOT: %s ", botAPI.Self.UserName)
 
 	u := tgBotApi.NewUpdate(0)
 	u.Timeout = 60
-
+	adminID, _ := strconv.Atoi(dao.BotConfig("admin_id"))
 	updates := botAPI.GetUpdatesChan(u)
-	adminID, _ := strconv.Atoi(dao.DynuConfig("admin_id"))
 	for update := range updates {
 		if update.Message == nil {
 			continue
 		}
+
 		if update.Message.From.ID != adminID {
-			_, _ = botAPI.Send(tgBotApi.NewMessage(int64(adminID), "用户:"+update.Message.From.UserName+
-				" : "+update.Message.Text))
+			errMsg := "用户:" + update.Message.From.UserName +
+				" : " + update.Message.Text
+			log.Printf(errMsg)
+			_, _ = botAPI.Send(tgBotApi.NewMessage(int64(adminID), errMsg))
 			continue
 		}
 		handleUpdate(update)
