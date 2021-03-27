@@ -60,7 +60,8 @@ type VmessObj struct {
 }
 
 func Expire() string {
-	res := Get("https://subscribe.zealingcloud.info/link/Zxv1RYVrJ7MXhSFS?sub=3")
+	subLink := "https://subscribe.zealingcloud.info/link/Zxv1RYVrJ7MXhSFS?sub=3"
+	res := Get(subLink)
 	encodedLinks, err := base64.StdEncoding.DecodeString(res)
 	if err != nil {
 		log.Panic("解码失败!")
@@ -72,12 +73,12 @@ func Expire() string {
 			if err != nil {
 				log.Panic("vmess解码失败! vmess:" + string(link))
 			}
-			//log.Println(string(link))
+			log.Println(string(link))
 			v := VmessObj{}
 			_ = json.Unmarshal(link, &v)
-			if strings.Contains(v.Remark, "剩余流量") || strings.Contains(v.Remark, "过期时间") {
+			if strings.Contains(v.Ps, "剩余流量") || strings.Contains(v.Ps, "过期时间") {
 				//log.Println(v.Remark)
-				result += v.Remark + "\n"
+				result += v.Ps + "\n"
 			}
 		}
 	}
