@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	tgBotApi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"my_assistant_go/app/dao"
@@ -19,7 +20,14 @@ func handleUpdate(update tgBotApi.Update) {
 			if name == update.Message.Text[1:] {
 				//参数形式待定
 				log.Print("执行" + name)
-				msg := tgBotApi.NewMessage(update.Message.Chat.ID, handler.Call(update))
+				result, err := handler.Call(update)
+
+				if err != nil {
+					errMsg := fmt.Sprintf("执行命令{%s}失败,stack trace:%v", name, err)
+					log.Printf(errMsg)
+					_, _ = BOT.Send(tgBotApi.NewMessage(update.Message.Chat.ID, errMsg))
+				}
+				msg := tgBotApi.NewMessage(update.Message.Chat.ID, result)
 				_, _ = BOT.Send(msg)
 			}
 		}
@@ -37,7 +45,7 @@ func InitBot() {
 		log.Panic(err)
 	}
 	BOT = botAPI
-	botAPI.Debug = true
+	botAPI.Debug = false
 
 	log.Printf("成功登录BOT: %s ", botAPI.Self.UserName)
 

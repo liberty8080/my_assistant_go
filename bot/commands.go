@@ -17,50 +17,50 @@ type NormalCommand struct {
 	// 描述,被help命令调用
 	desc string
 	// 执行的方法
-	Call func(update tgbotapi.Update, args ...string) string
+	Call func(update tgbotapi.Update, args ...string) (string, error)
 }
 
 var Help = &NormalCommand{
 	name: "help",
 	desc: "帮助信息",
-	Call: func(update tgbotapi.Update, args ...string) string {
+	Call: func(update tgbotapi.Update, args ...string) (string, error) {
 		result := ""
 		for key, command := range CommandsMap {
 			result = fmt.Sprintf("%s/%s: %s\n", result, key, command.desc)
 		}
-		return result
+		return result, nil
 	},
 }
 
 var Json = &NormalCommand{
 	name: "json",
 	desc: "json数据转换",
-	Call: func(update tgbotapi.Update, args ...string) string {
+	Call: func(update tgbotapi.Update, args ...string) (string, error) {
 		jsons, err := json.Marshal(update)
 		if err != nil {
 			log.Println("json转换失败")
 		}
-		return string(jsons)
+		return string(jsons), err
 	},
 }
 
 var DDNS = &NormalCommand{
 	name: "ddns",
 	desc: "同步ddns",
-	Call: func(update tgbotapi.Update, args ...string) string {
+	Call: func(update tgbotapi.Update, args ...string) (string, error) {
 		username := dao.DynuConfig("username")
 		passwd := dao.DynuConfig("password")
 		hostname := dao.DynuConfig("hostname")
-		myIp := util.GetPublicIP()
+		myIp, err := util.GetPublicIP()
 		result := util.Get(fmt.Sprintf("https://api.dynu.com/nic/update?hostname=%s&myip=%s&username=%s&password=%s", hostname, myIp, username, passwd))
-		return result
+		return result, err
 	},
 }
 
 var IP = &NormalCommand{
 	name: "ip",
 	desc: "获取当前公网ip",
-	Call: func(update tgbotapi.Update, args ...string) string {
+	Call: func(update tgbotapi.Update, args ...string) (string, error) {
 		return util.GetPublicIP()
 	},
 }
@@ -68,7 +68,7 @@ var IP = &NormalCommand{
 var Expire = &NormalCommand{
 	name: "expire",
 	desc: "查看机场过期时间",
-	Call: func(update tgbotapi.Update, args ...string) string {
+	Call: func(update tgbotapi.Update, args ...string) (string, error) {
 		return util.Expire()
 	},
 }

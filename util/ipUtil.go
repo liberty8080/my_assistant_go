@@ -31,14 +31,14 @@ func download(url string) {
 }
 
 // 获取当前公网ip
-func GetPublicIP() string {
+func GetPublicIP() (string, error) {
 	res, err := http.Get("http://ip.42.pl/raw")
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 	defer res.Body.Close()
 	s, err := ioutil.ReadAll(res.Body)
-	return string(s)
+	return string(s), err
 }
 
 type VmessObj struct {
@@ -59,28 +59,28 @@ type VmessObj struct {
 	Class      int    `json:"class"`
 }
 
-func Expire() string {
+func Expire() (string, error) {
 	subLink := "https://subscribe.zealingcloud.info/link/Zxv1RYVrJ7MXhSFS?sub=3"
 	res := Get(subLink)
 	encodedLinks, err := base64.StdEncoding.DecodeString(res)
 	if err != nil {
-		log.Panic("解码失败!")
+		log.Println("解码失败!")
 	}
 	var result = ""
 	for _, encoded := range strings.Split(string(encodedLinks), "\n") {
 		if len(encoded) != 0 {
 			link, err := base64.StdEncoding.DecodeString(strings.Replace(encoded, "vmess://", "", 1))
 			if err != nil {
-				log.Panic("vmess解码失败! vmess:" + string(link))
+				log.Println("vmess解码失败! vmess:" + string(link))
 			}
 			log.Println(string(link))
 			v := VmessObj{}
 			_ = json.Unmarshal(link, &v)
 			if strings.Contains(v.Ps, "剩余流量") || strings.Contains(v.Ps, "过期时间") {
-				//log.Println(v.Remark)
+				log.Println(v.Ps)
 				result += v.Ps + "\n"
 			}
 		}
 	}
-	return result
+	return result, err
 }

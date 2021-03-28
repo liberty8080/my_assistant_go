@@ -10,7 +10,6 @@ func TestNmap(t *testing.T) {
 }
 
 func TestPublicIp(t *testing.T) {
-	//GetPublicIP()
 	println(GetPublicIP())
 }
 
@@ -19,5 +18,9 @@ func TestHelpCommand(t *testing.T) {
 }
 
 func TestExpire(t *testing.T) {
-	log.Printf("vmess: %s\n", Expire())
+	result, err := Expire()
+	if err != nil {
+		log.Printf("Log if")
+	}
+	log.Printf("vmess: %s\n", result)
 }
